@@ -1,0 +1,28 @@
+* show used port
+lsof -i -P -n | grep LISTEN | grep <port>
+
+* allow port in firewal to accept
+firewall-cmd --permanent --add-port=<port>/<protocol: tcp/udp> 
+example: firewall-cmd --permanent --add-port=4096/tcp
+
+* block default ssh port
+firewall-cmd --remove-port=<port>/<protocol: tcp/udp> --permanent
+example: firewall-cmd --remove-port=22/tcp --permanent
+
+* add rule
+firewall-cmd --permanent --add-rich-rule '<rule>'
+
+* remove rule
+firewall-cmd --permanent --remove-rich-rule '<rule>'
+
+NOTE:
+* After all firewall-cmd configuration you must reload firewall service
+firewall-cmd --reload
+
+* edit file /ect/ssh/sshd_config
+change Port 22 to your desired port
+NOTE: you have to run (systemctl restart sshd) to reload ssh service
+
+* edit file /etc/hosts.allow
+add comma separed IP address or line separated
+for your only allowed clients to access via ssh
