@@ -1,0 +1,32 @@
+* Basic Linux Configuration
+
+$ sudo yum install chrony
+$ sudo vim /etc/chrony.conf
+	--> add pool time2.google.com
+	--> allow 10.0.0.0/24 --> add network range to allow to receive time synchronization requests from NTP Clients
+
+If Firewalld is running, allow NTP service. NTP uses [123/UDP].
+
+$ firewall-cmd --permanent --add-service=ntp
+$ firewall-cmd --reload
+
+$ sudo systemctl enable --now chronyd
+$ sudo timedatectl set-timezone <timezone>
+	--> $ timedatectl list-timezones --> to list timezones
+
+Verify sources
+$ chronyc sources
+
+$ sudo yum install httpd
+	--> enable/start httpd service
+	--> sudo firewall-cmd --permanent --add-service=http
+	--> sudo firewall-cmd --permanent --add-port=80/tcp
+	--> reload httpd service
+
+$ sudo yum install mariadb-server
+	--> sudo nano /etc/my.cnf.d/charset.cnf
+		--> [mysqld]
+		default-character-set = utf8mb4
+		[client]
+		default-character-set = utf8mb4
+	--> sudo firewall-cmd --permanent --add-service=mysql
