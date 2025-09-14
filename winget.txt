@@ -1,0 +1,5 @@
+* enable winget on windows (use powershell as administrator)
+$progressPreference = 'silentlyContinue'
+Install-PackageProvider -Name NuGet -Force | Out-Null
+Install-Module -Name Microsoft.WinGet.Client -Force -Repository PSGallery | Out-Null
+Repair-WinGetPackageManager
