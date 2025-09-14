@@ -1,0 +1,26 @@
+0. (dnf/yum) install net-snmp net-snmp-utils mrtg
+
+1. install Web Server (apache/nginx)
+2. cd /var/www/html/
+	--> make a directory of your choice
+	--> cd to that directory
+	--> important: (switch user to root)
+
+3. cfgmaker ParasatRO@<RouterIP>:::::2 > mrtg.cfg
+	--> ex: cfgmaker <snmp-string>@<ip-address>:::::2 > mrtg.cfg
+
+4. type pwd & copy your path
+5. vim mrtg.cfg
+	--> uncomment & modify "WorkDir" ex: WorkDir: /var/www/html/val-0
+	--> uncomment "Options[_]: growright, bits"
+	--> save type :wq then enter
+
+6. verify service crond is enabled & running
+7. crontab -l (list all cron jobs)
+	--> important: only append new cron jobs
+	--> DO NOT delete existing cron jobs
+
+8. crontab -e (add new entry to crontab)
+	--> */5 * * * * env LANG=C /usr/bin/mrtg /var/www/html/updated_NAT/VAL-NAT/NAT-1/mrtg.cfg
+
+9. indexmaker mrtg.cfg > index.html
