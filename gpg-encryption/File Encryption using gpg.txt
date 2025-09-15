@@ -1,0 +1,33 @@
+File Encryption using GnuPG
+
+* Install on windows
+$ winget install -e --id GnuPG.GnuPG
+
+* on Linux
+GnuPG (GPG) is included by default in most Linux distributions
+
+$ gpg --gen-key
+$ gpg -c FILENAME.txt (two files will be created (FILENAME.txt & FILENAME.txt.gpg))
+$ rm FILENAME.txt (Remove the original unencrypted file)
+
+Note that there was no passphrase prompt to decrypt the file.
+If you want to be prompted to enter the password to decrypt the file again,
+you'll have to wait ten minutes, which is the default timeout value.
+
+To bypass this;
+
+Create file gpg-agent.conf
+* on Linux
+~/.gnupg/gpg-agent.conf
+
+* on Windows
+C:\Users\<username>\AppData\Roaming\gnupg\
+
+$ cd <directory>
+$ nano gpg-agent.conf
+
+* Add this lines to the file
+    default-cache-ttl 1
+    max-cache-ttl 1
+
+$ echo RELOADAGENT | gpg-connect-agent
