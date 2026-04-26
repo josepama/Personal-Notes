@@ -1,0 +1,71 @@
+* BASIC SECURITY
+
+$ enable
+$ configure terminal
+$ enable secret <Your-Super-Strong-Password-123!>
+
+$ hostname <hostname>
+$ ip domain-name <yourcompany.com>
+$ service password-encryption
+$ username <username> privilege 15 secret <Another-Strong-Password-456!>
+
+$ aaa new-model
+$ aaa authentication login default local
+
+$ line con 0
+ 	login authentication default
+ 	exec-timeout 5 0
+ 	logging synchronous
+ 	exit
+
+$ line vty 0 15
+ 	login authentication default
+ 	transport input ssh
+ 	exec-timeout 5 0
+ 	exit
+
+$ crypto key generate rsa modulus <>
+$ ip ssh version 2
+$ ip ssh time-out 60
+$ ip ssh authentication-retries 3
+
+
+$ line aux 0
+ 	no exec
+ 	exec-timeout 0 1
+ 	login authentication default
+ 	exit
+
+$ banner motd #
+| ##################################################################
+| #                  This is a private server!                     #
+| #         All connections are monitored and recorded.            #
+| #   Disconnect IMMEDIATELY if you are not an authorized user!    #
+| #                                                                #
+| #       Unauthorized access to this machine is prohibited        #
+| # Only authorized System Administrator can access to this system #
+| ##################################################################
+#
+
+$ end
+$ copy running-config startup-config
+
+
+* DHCP SERVER ON ROUTER/L3-SWITCH
+
+$ ip dhcp excluded-address <ip-address-range>		e.g. 192.168.20.1 192.168.20.10
+$ ip dhcp pool <pool-name>
+ 	network <network-address> 						e.g. 192.168.20.0 255.255.255.0
+ 	default-router 192.168.20.1
+ 	dns-server <dns-server>
+
+
+* OSPF L3-SWITCH/ROUTER
+
+$ ip routing
+$ router id <RID> or Loopback Interface IP
+$ router ospf <process-id>
+$ passive-interface default
+$ no passive-interface <advertising-interfaces>
+$ passive-interface <interface used for OSPF>
+
